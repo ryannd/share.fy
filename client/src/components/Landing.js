@@ -9,7 +9,7 @@ export default class Landing extends React.Component {
                 <h1 class="Name">Share.fy</h1>
                 <p class="Slogan">Search, Compare, Share</p>
             
-                <Button style={{ backgroundColor: "#32da8a" }} href = "https://accounts.spotify.com/en/login" target="_blank" >Login</Button>{' '}
+                <Button size="lg" style={{ backgroundColor: "#32da8a" }} href = "https://accounts.spotify.com/en/login" target="_blank" >Login</Button>{' '}
                 
             </div>
         )
