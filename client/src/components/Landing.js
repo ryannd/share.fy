@@ -12,10 +12,12 @@ export default class Landing extends React.Component {
     }
     render() {
         return (
-            <div class="Login d-flex align-items-center justify-content-center flex-column">
-                <h1 class="Name">Share.fy</h1>
-                <p class="Slogan">Search, Compare, Share</p>
-                <Button style={{ backgroundColor: "#32da8a" }} href={this.authUrl}>Login</Button>{' '}
+            <div>
+                <div class="Login d-flex align-items-center justify-content-center flex-column">
+                    <h1 class="Name">share.fy</h1>
+                    <p class="Slogan">Search, Compare, Share</p>
+                    <Button style={{ backgroundColor: "#222222"}} size="lg" href={this.authUrl}>Login</Button>{' '}
+                </div>
             </div>
         )
     }

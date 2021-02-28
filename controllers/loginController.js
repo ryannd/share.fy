@@ -9,7 +9,19 @@ let spotifyApi = new SpotifyWebApi();
 exports.login = async function (req,res) {
     let accessToken = req.query.code
     req.session.access_code = accessToken
-    res.status(200).redirect("http://localhost:3000/compare/")
+    spotifyApi.authorizationCodeGrant(req.session.access_code)
+        .then((data) => {
+            spotifyApi.setAccessToken(data.body['access_token']);
+            spotifyApi.setRefreshToken(data.body['refresh_token']);
+            return spotifyApi.getMe();
+        })
+        .then((data) => {
+            req.session.userId = data.body.id
+            res.status(200).send(data)
+        }).catch((err) => {
+            console.log(err)
+        })
+    res.status(200).redirect("http://localhost:3000/search/")
 }
 
 exports.url = function (req, res) {

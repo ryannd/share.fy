@@ -1,13 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,900;1,200;1,900&display=swap');
-#TopRight{
-    height:100vh;
-    width: 50%;
-    float:right;
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
-.Navbar{
-    float:right;
-    font-family:sans-serif,;  
+.left-column {
+    background-color: #222222;
+    height: 100vh;
+    padding: 3%;
+}
+
+.right-column {
+    padding-top: 3%;
+    background-color: #CCFFCB;
+    height: 100vh;
 }
 
 
+.disable-scrollbars::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* Chrome/Safari/Webkit */
+}
+
+.disable-scrollbars {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+
+.comp-placeholder {
+    font-family: 'Poppins', sans-serif;
+    font-size: 48px;
+    font-weight: 400;
+}

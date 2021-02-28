@@ -1,0 +1,32 @@
+.Profile_pic {
+    border-radius: 100px;
+}
+
+.User {
+    width: 70%;
+    font-size: 30px;
+    height: 70%;
+    padding: 5%;
+    background: linear-gradient(to right, #779cab, #A2E8DD);
+    border-radius: 20px;
+
+}
+
+.product-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 200;
+    font-style: italic;
+    font-size: 64px;
+    color: #A2E8DD;
+    margin-bottom: 4%;
+}
+
+.full-height {
+    height: 96vh;
+    padding-top: 6%;
+}
+
+.profile-text {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}

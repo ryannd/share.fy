@@ -1,14 +1,10 @@
 import React from 'react';
 import './Searchpage.css';
 
-import {
-    Input,
-    Container
-  } from 'reactstrap';
-
-  import { InputGroup, InputGroupAddon,} from 'reactstrap';
- 
   import {
+    InputGroup, InputGroupAddon,Input,
+    Container,
+    Button,
     Collapse,
     Navbar,
     NavbarToggler,
@@ -18,28 +14,61 @@ import {
     NavLink,
     NavbarText,
     Row,
+    Col
     
   } from 'reactstrap';
 
-export default class Searchpage extends React.Component {
-    render() {
+import Compare from '../Compare/Compare'
+import Profile from '../Profile'
 
+export default class Searchpage extends React.Component {
+    constructor(props) {
+      super(props)
+      this.initCompare = this.initCompare.bind(this)
+      let comparePlaceholder = this.initCompare()
+      this.state = {compareComponent: comparePlaceholder}
+      this.renderCompare = this.renderCompare.bind(this)
+      this.handleSearchChange = this.handleSearchChange.bind(this)
+    }
+    handleSearchChange = (event) => {
+      this.setState({toSearch: event.target.value})
+    }
+    componentDidMount() {
+
+      
+    }
+    initCompare() {
+      return (
+        <div className="text-center">
+          <h1 className="comp-placeholder">Vibe check your friend's music taste.<br></br>Search for a user.</h1>
+        </div>
+      )
+    }
+    renderCompare() {
+      console.log(this.state.toSearch)
+      this.setState({compareComponent: <Compare user={this.state.toSearch}/>})
+      this.forceUpdate()
+    }
+    render() {
         return (
-    
         <Container fluid>
-          <section id="TopRight" className="d-flex">
-            <InputGroup>
-              <InputGroupAddon>Search</InputGroupAddon>
-              <Input className="input" style={{width: "20%"}}/>
-            </InputGroup>
-              <div id="Navbar">
-                <Navbar light expand ="md">
-                  <NavbarBrand href = "http://localhost:3000/search">Home</NavbarBrand>
-                  <NavbarBrand href="https://open.spotify.com">Spotify</NavbarBrand>
-                  <NavbarBrand href="https://open.spotify.com/collection/playlists">Playlist</NavbarBrand>
-                </Navbar>
+          <Row>
+            <Col lg="4" className="left-column">
+              <div className="d-flex align-items-center justify-content-center flex-column left-inner">
+                <h1 className="product-title">share.fy</h1>
+                <Input id="search" onChange={(e) => this.handleSearchChange(e)} className="inputlg align-self-center col-lg-8" placeholder="Spotify User ID (NOT display name!)"></Input>
+                <Button onClick={() => this.renderCompare()} style={{marginTop: "3%"}}>Search</Button>
               </div>
-          </section>
+              
+              <Profile/>
+            </Col>
+            <Col className="right-column disable-scrollbars d-flex align-items-center flex-column">
+              
+              <div className="disable-scrollbars right-inner">
+                {this.state.compareComponent}
+              </div>
+            </Col>
+          </Row>
         
 
         </Container>
