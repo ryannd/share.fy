@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react';
 import { Button } from 'reactstrap';
 import './Landing.css'
-
+import Compare from './Compare/Compare'
 export default class Landing extends React.Component {
     async componentDidMount() {
         this.get = await getUrl()
@@ -15,9 +15,7 @@ export default class Landing extends React.Component {
             <div class="Login d-flex align-items-center justify-content-center flex-column">
                 <h1 class="Name">Share.fy</h1>
                 <p class="Slogan">Search, Compare, Share</p>
-            
                 <Button style={{ backgroundColor: "#32da8a" }} href={this.authUrl}>Login</Button>{' '}
-                
             </div>
         )
     }

@@ -40,6 +40,11 @@ export default class Compare extends React.Component {
         return(
             <div>
                 <h1>LOL</h1>
+                <h1>LOL</h1>
+                <h1>LOL</h1>
+                <h1>LOL</h1>
+                <h1>LOL</h1>
+                <h1>LOL</h1>
             </div>
         )
     }

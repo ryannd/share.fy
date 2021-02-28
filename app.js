@@ -11,6 +11,7 @@ const session = require('express-session')
 var loginRouter = require('./routes/login');
 var userRouter = require('./routes/user');
 var searchRouter = require('./routes/search')
+var playlistRouter = require('./routes/playlist')
 
 var app = express();
 const dotenv = require('dotenv');
@@ -55,6 +56,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/login', loginRouter);
 app.use('/user', userRouter)
 app.use('/search', searchRouter)
+app.use('/playlist', playlistRouter)
 
 
 // catch 404 and forward to error handler

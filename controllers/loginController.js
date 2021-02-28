@@ -9,7 +9,7 @@ let spotifyApi = new SpotifyWebApi();
 exports.login = async function (req,res) {
     let accessToken = req.query.code
     req.session.access_code = accessToken
-    res.status(200).redirect("http://localhost:3000/user")
+    res.status(200).redirect("http://localhost:3000/compare/")
 }
 
 exports.url = function (req, res) {
