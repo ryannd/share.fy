@@ -1,0 +1,14 @@
+
+
+.Profile_pic {
+    border-radius: 100px;
+}
+
+.Username {
+    background-color: #a2e8dd ;
+    height: 100vh;
+    width: 700px;
+    border-radius: 50px;
+    font-size: 30px;
+    
+}
