@@ -1,21 +1,39 @@
 import React from 'react'
 import axios from 'axios'
+import {Row,Col,Card,CardBody,CardTitle,CardSubtitle,CardImg,CardText,Button} from 'reactstrap'
+import "./Compare.css"
 
 export default class Compare extends React.Component {
+    constructor(props){
+        super(props)
+        this.userSearch = 'e3z1hsylhbc7d5bja0oon8fxi'
+        this.handleList = this.handleList.bind(this);  
+        this.calculatePercent = this.calculatePercent.bind(this)
+        this.renderCompare = this.renderCompare.bind(this)
+        this.getRandomTracks = this.getRandomTracks.bind(this)
+        this.state = {visibleComponent: <div><p>LOADING</p></div>}
+    }
     async componentDidMount(){
         this.user = await getUser();
         this.playlist = await getCurrUserPlaylist();
-        this.compareList = await getUserPlaylist('paintba11');
-        this.handleList = this.handleList.bind(this);  
-        this.diff = new Set();
-        this.same = new Set();
-        this.userTracks = await this.handleList(this.compareList.body.items)
-        this.currTracks = await this.handleList(this.playlist.body.items)
-
-        console.log(this.diff)
-        console.log(this.same)
+        this.compareList = await getUserPlaylist(this.userSearch);
+        this.searchUser = await searchUser(this.userSearch);
+        console.log(this.user)
+        await this.handleList(this.compareList.body.items, "searchList")
+        await this.handleList(this.playlist.body.items, "userList")
+        setTimeout(
+            function() {
+                this.calculatePercent()
+                this.setState({trackList: Array.from(this.state.sameSet)}, function() {
+                    this.getRandomTracks(this.state.trackList)
+                })
+            }
+            .bind(this),
+            3000
+        );
+        this.forceUpdate()
     }
-    async handleList(list) {
+    async handleList(list, name) {
         let set = new Set();
         await list.forEach((curr) => {
             getPlaylistData(curr.id).then((data) => {
@@ -23,28 +41,89 @@ export default class Compare extends React.Component {
                     if(track.track !== null) {
                         let trackParsed = JSON.parse(JSON.stringify(track.track))
                         set.add(trackParsed.id)
-                        if(!this.diff.has(trackParsed.id)) {
-                            this.diff.add(trackParsed.id)
-                        }
-                        else {
-                            this.same.add(trackParsed.id)
-                        }
                     }
                 })
             })
         })
-        console.log(set)
-        return set
+        this.setState({[name]: set});
+    }
+    calculatePercent() {
+        let sameSet = new Set();
+        let diffSet = new Set();
+        for(let elem of this.state.userList){
+            if(this.state.searchList.has(elem)){
+                sameSet.add(elem)
+            }
+            else {
+                diffSet.add(elem)
+            }
+        }
+
+        for(let elem of this.state.searchList) {
+            if(this.state.userList.has(elem)) {
+                sameSet.add(elem)
+            }
+            else {
+                diffSet.add(elem)
+            }
+        }
+        this.setState({sameSet: sameSet, diffSet: diffSet}, () => {
+            console.log(this.state.sameSet.size)
+            console.log(this.state.diffSet.size)
+
+            let percent;
+            if(this.state.diffSet.size == 0){
+                percent = 1
+            }
+            else {
+                percent = this.state.sameSet.size / this.state.diffSet.size
+            }
+            this.setState({percentSame: (percent * 100).toPrecision(4)})
+        })
+        
+    }
+    renderCompare() {
+        console.log(this.state.topTracks)
+        console.log(this.state.sameSet)
+        console.log(this.state.diffSet)
+        let tracks = this.state.topTracks.body.tracks.map((track) => {
+            return <div className="track-list">
+                <Card>
+                    <Row>
+                        <Col><CardImg top src={track.album.images[0].url} className="album-cover" alt="Card image cap" /></Col>
+                        <Col>
+                            <CardBody>
+                                <CardTitle tag="h5">{track.name}</CardTitle>
+                                <CardSubtitle tag="h6" className="mb-2 text-muted"></CardSubtitle>
+                                <CardText>{track.album.name}</CardText>
+                                <Button href={track.external_urls.spotify} target="__blank">Open in Spotify</Button>
+                            </CardBody>
+                        </Col>
+                    </Row>
+                    
+                </Card>
+            </div>
+        }) 
+        return (
+            <div className="text-center">
+                <p>Compared to: {this.searchUser.body.display_name}</p>
+                <h1>You have {this.state.percentSame}% similiary in song choice.</h1>
+                {tracks}
+            </div>
+        )
+    }
+    async getRandomTracks(tracks) {
+        let randomTracks = [];
+        for(let i = 0; i< 10;i++){
+            randomTracks.push(tracks[i])
+        }
+        console.log(randomTracks)
+        this.setState({topTracks: await getTracks(randomTracks)}, () => this.setState({visibleComponent: this.renderCompare()}))
     }
     render() {
         return(
             <div>
-                <h1>LOL</h1>
-                <h1>LOL</h1>
-                <h1>LOL</h1>
-                <h1>LOL</h1>
-                <h1>LOL</h1>
-                <h1>LOL</h1>
+                {this.state.visibleComponent}
             </div>
         )
     }
@@ -89,6 +168,30 @@ async function getPlaylistData(id) {
         headers: {},
         data: {
             listId: id
+        },
+        withCredentials: true,
+    }).then((req) => req.data).catch((err) => console.log(err))
+}
+
+async function searchUser(user) {
+    return await axios({
+        method: 'POST',
+        url: "http://localhost:5000/search/user",
+        headers: {},
+        data: {
+            user: user
+        },
+        withCredentials: true,
+    }).then((req) => req.data).catch((err) => console.log(err))
+}
+
+async function getTracks(tracks) {
+    return await axios({
+        method: 'POST',
+        url: "http://localhost:5000/search/tracks",
+        headers: {},
+        data: {
+            tracks: tracks
         },
         withCredentials: true,
     }).then((req) => req.data).catch((err) => console.log(err))
