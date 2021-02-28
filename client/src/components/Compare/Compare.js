@@ -2,20 +2,22 @@ import React from 'react'
 import axios from 'axios'
 import {Row,Col,Card,CardBody,CardTitle,CardSubtitle,CardImg,CardText,Button} from 'reactstrap'
 import "./Compare.css"
+import ReactLoading from 'react-loading';
 
 export default class Compare extends React.Component {
     constructor(props){
         super(props)
-        this.userSearch = 'e3z1hsylhbc7d5bja0oon8fxi'
+        this.userSearch = this.props.user
         this.handleList = this.handleList.bind(this);  
         this.calculatePercent = this.calculatePercent.bind(this)
         this.renderCompare = this.renderCompare.bind(this)
         this.getRandomTracks = this.getRandomTracks.bind(this)
-        this.state = {visibleComponent: <div><p>LOADING</p></div>}
+        this.state = {visibleComponent: <ReactLoading type={"bars"} color={"#000000"} height={400} width={200} />}
     }
     async componentDidMount(){
         this.user = await getUser();
         this.playlist = await getCurrUserPlaylist();
+        console.log(this.playlist)
         this.compareList = await getUserPlaylist(this.userSearch);
         this.searchUser = await searchUser(this.userSearch);
         console.log(this.user)
@@ -87,12 +89,12 @@ export default class Compare extends React.Component {
         console.log(this.state.sameSet)
         console.log(this.state.diffSet)
         let tracks = this.state.topTracks.body.tracks.map((track) => {
-            return <div className="track-list">
+            return <div>
                 <Card>
                     <Row>
                         <Col><CardImg top src={track.album.images[0].url} className="album-cover" alt="Card image cap" /></Col>
                         <Col>
-                            <CardBody>
+                            <CardBody className="d-flex align-items-center justify-content-center flex-column">
                                 <CardTitle tag="h5">{track.name}</CardTitle>
                                 <CardSubtitle tag="h6" className="mb-2 text-muted"></CardSubtitle>
                                 <CardText>{track.album.name}</CardText>
@@ -105,16 +107,22 @@ export default class Compare extends React.Component {
             </div>
         }) 
         return (
-            <div className="text-center">
-                <p>Compared to: {this.searchUser.body.display_name}</p>
-                <h1>You have {this.state.percentSame}% similiary in song choice.</h1>
-                {tracks}
+            <div className="text-center d-flex align-items-center justify-content-center flex-column">
+                <div className="comp-text">
+                    <p className="comp-sub">Compared to {this.searchUser.body.display_name},</p>
+                    <h1 className="comp-title">You have {this.state.percentSame}% similiary in song choice.</h1>
+                    <p className="comp-sub">You share {this.state.sameSet.size} tracks. Here are some tracks that you two share </p>
+                </div>
+                <div className="full-comp disable-scrollbars">
+                    {tracks}
+                </div>
             </div>
+            
         )
     }
     async getRandomTracks(tracks) {
         let randomTracks = [];
-        for(let i = 0; i< 10;i++){
+        for(let i = 0; i< 15;i++){
             randomTracks.push(tracks[i])
         }
         console.log(randomTracks)
