@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,900;1,200;1,900&display=swap');
+
+
+
 .Login {
   text-align: center;
   height: 100vh;
@@ -9,12 +13,12 @@
 
 .Name {
     font-size: 85px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;    
 }
 
 .Slogan {
     font-style: oblique;
     font-size: 25px;
-}
-.button {
-    
-}
+    font-family: 'Poppins', sans-serif;
+      }
