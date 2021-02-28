@@ -7,6 +7,7 @@ import {
 
 import Landing from './components/Landing'
 import Login from './components/Login/Login'
+import Compare from './components/Compare/Compare'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={Landing}/>
         <Route exact path="/callback" component={Login}/>
+        <Route exact path="/compare" component={Compare}/>
       </Switch>
     </Router>
   );
